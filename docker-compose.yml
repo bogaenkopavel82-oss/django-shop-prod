@@ -10,6 +10,12 @@ services:
     env_file:
       - .env
     volumes:
+      - ./mysite:/app/mysite
       - ./logs:/app/logs
       - ./media:/app/media
       - ./static:/app/static
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "10"
+        max-size: "200k"
