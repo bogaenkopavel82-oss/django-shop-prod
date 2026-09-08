@@ -1,23 +1,25 @@
-# Используем официальный образ Python
+# Базовый образ с Python
 FROM python:3.12-slim
 
-# Отключаем буферизацию вывода
+# Отключаем буферизацию вывода Python
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# Устанавливаем рабочую директорию внутри контейнера
+# Устанавливаем рабочую директорию в контейнере
 WORKDIR /app
 
 # Копируем файл с зависимостями и устанавливаем их
 COPY requirements.txt /app/
-RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Копируем весь код проекта
+# Создаём папки для логов и медиафайлов
+RUN mkdir -p /app/logs /app/media /app/static
+
+# Копируем весь проект
 COPY . /app/
 
-# Открываем порт, который будет использовать приложение
+# Открываем порт 8000
 EXPOSE 8000
 
-# Запускаем Gunicorn (WSGI-сервер) с 3 рабочими процессами
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "3", "mysite.wsgi:application"]
+# Запускаем Gunicorn
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "3", "--access-logfile", "/app/logs/gunicorn_access.log", "--error-logfile", "/app/logs/gunicorn_error.log", "mysite.wsgi:application"]
