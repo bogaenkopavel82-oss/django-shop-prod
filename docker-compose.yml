@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  # Сервис для Django-приложения
+  web:
+    build: .
+    command: gunicorn --bind 0.0.0.0:8000 --workers 3 mysite.wsgi:application
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=False
+      - PYTHONUNBUFFERED=1
