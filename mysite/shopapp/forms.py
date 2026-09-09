@@ -8,9 +8,7 @@ class ProductForm(forms.ModelForm):
         model = Product
         fields = "name", "price", "description", "discount", "preview"
 
-    images = forms.ImageField(
-        widget=forms.FileInput(),
-    )
+    images = forms.ImageField()
 
 
 class CSVImportForm(forms.Form):
