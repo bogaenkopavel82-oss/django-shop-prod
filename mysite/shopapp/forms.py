@@ -1,5 +1,4 @@
 from django import forms
-
 from shopapp.models import Product
 
 
