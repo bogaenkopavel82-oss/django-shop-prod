@@ -1,5 +1,13 @@
-from blogapp.sitemap import BlogSitemap
+from django.contrib.sitemaps import Sitemap
+from shopapp.models import Product
 
-sitemaps = {
-    "blog": BlogSitemap,
-}
+
+class ProductSitemap(Sitemap):
+    changefreq = "weekly"
+    priority = 0.9
+
+    def items(self):
+        return Product.objects.all()
+
+    def lastmod(self, obj):
+        return obj.created_at
